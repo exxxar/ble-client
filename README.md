@@ -50,25 +50,69 @@
 ---
 
 ## 🏗️ Архитектура
-┌─────────────────────────┐ BLE 5.0 ┌─────────────────────────┐
-│ Ноутбук 1 (Сервер) │ ◄═══════════════════► │ Ноутбук 2 (Клиент) │
-│ │ │ │
-│ BleEmulator (C#) │ • Advertising │ ble_client (Python) │
-│ ├─ 💓 Polar H10 │ • GATT Notify │ ├─ 📊 Графики │
-│ ├─ 🕶️ Ray-Ban Meta │ • GATT Write │ ├─ 🎯 Gauge │
-│ ├─ 🌡️ Xiaomi Temp │ • GATT Read │ ├─ 🎬 Плеер │
-│ ├─ 🎧 AirPods Pro │ │ ├─ 📁 CSV экспорт │
-│ ├─ 🚴 Wahoo KICKR │ │ ├─ 📸 PNG экспорт │
-│ ├─ ⌚ Galaxy Watch │ │ ├─ 🏠 MQTT → HA │
-│ ├─ 💡 Yeelight Bulb │ │ └─ 🔔 Уведомления │
-│ └─ 🔒 Aqara Lock │ │ │
-└─────────────────────────┘ └─────────────────────────┘
-│
-▼
-┌─────────────────┐
-│ Home Assistant │
-│ (MQTT Broker) │
-└─────────────────┘
+## Архитектура системы
+
+```mermaid
+flowchart LR
+    subgraph SERVER["💻 Ноутбук 1 — Сервер"]
+        BE["BleEmulator<br/>(C#)"]
+        
+        H10["💓 Polar H10"]
+        META["🕶️ Ray-Ban Meta"]
+        TEMP["🌡️ Xiaomi Temp"]
+        AIRPODS["🎧 AirPods Pro"]
+        KICKR["🚴 Wahoo KICKR"]
+        WATCH["⌚ Galaxy Watch"]
+        YEELIGHT["💡 Yeelight Bulb"]
+        AQARA["🔒 Aqara Lock"]
+
+        BE --- H10
+        BE --- META
+        BE --- TEMP
+        BE --- AIRPODS
+        BE --- KICKR
+        BE --- WATCH
+        BE --- YEELIGHT
+        BE --- AQARA
+    end
+
+    BLE["📡 BLE 5.0<br/>Advertising • GATT Notify<br/>GATT Write • GATT Read"]
+
+    subgraph CLIENT["💻 Ноутбук 2 — Клиент"]
+        PY["ble_client<br/>(Python)"]
+        
+        GRAPHS["📊 Графики"]
+        GAUGE["🎯 Gauge"]
+        PLAYER["🎬 Плеер"]
+        CSV["📁 CSV экспорт"]
+        PNG["📸 PNG экспорт"]
+        MQTT["🏠 MQTT → HA"]
+        NOTIFY["🔔 Уведомления"]
+
+        PY --- GRAPHS
+        PY --- GAUGE
+        PY --- PLAYER
+        PY --- CSV
+        PY --- PNG
+        PY --- MQTT
+        PY --- NOTIFY
+    end
+
+    HA["🏠 Home Assistant<br/>(MQTT Broker)"]
+
+    BE <--> BLE
+    BLE <--> PY
+    MQTT --> HA
+
+    classDef server fill:#e8f5f4,stroke:#47c2c0,stroke-width:2px
+    classDef client fill:#eef3ff,stroke:#5b7cfa,stroke-width:2px
+    classDef ble fill:#fff4d6,stroke:#e6a817,stroke-width:2px
+    classDef ha fill:#e8e0ff,stroke:#7952b3,stroke-width:2px
+
+    class SERVER,BE,H10,META,TEMP,AIRPODS,KICKR,WATCH,YEELIGHT,AQARA server
+    class CLIENT,PY,GRAPHS,GAUGE,PLAYER,CSV,PNG,MQTT,NOTIFY client
+    class BLE ble
+    class HA ha
 
 
 ---
