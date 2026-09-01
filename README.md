@@ -99,30 +99,31 @@
 cd BleEmulator
 ```
 
-# 1. Убедитесь, что в BleEmulator.csproj указано:
-#    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
-#    <Platforms>x64</Platforms>
-
-# 2. Сборка
+## 1. Убедитесь, что в BleEmulator.csproj указано:
+```
+   <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+   <Platforms>x64</Platforms>
+```
+## 2. Сборка
 ```
 dotnet build -c Debug -p:Platform=x64
 ```
-# 3. Запуск
+## 3. Запуск
 ```
 dotnet run
 ```
 
-# Запуск клиента
+## Запуск клиента
 ```
 cd ble_client
 ```
 
-# 1. Установка зависимостей
+## 1. Установка зависимостей
 ```
 pip install -r requirements.txt
 ```
 
-# 2. Запуск
+## 2. Запуск
 ```
 python main.py
 ```
@@ -138,6 +139,7 @@ python main.py
 
 ### 📦 Структура проекта
 
+```
 ble-iot-platform/
 ├── README.md
 ├── BleEmulator/                    # C# эмулятор
@@ -182,3 +184,4 @@ ble-iot-platform/
     └── exports/                    # Создаётся автоматически
         ├── csv/
         └── charts/
+```
